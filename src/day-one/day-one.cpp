@@ -5,31 +5,42 @@
 #include <unordered_map>
 #include <vector>
 
+using namespace std;
+
 int combine_items(char x, char y) {
-  std::string string_deez_nuts = std::string(1, x) + std::string(1, y);
-  return std::stoi(string_deez_nuts);
+  string string_deez_nuts = string(1, x) + string(1, y);
+  return stoi(string_deez_nuts);
 }
 
-int part_one(std::ifstream &infile) {
-  std::string line;
-  std::vector<int> numbers;
+bool replace(string &str, const string &from, const string &to) {
+  size_t start_pos = str.find(from);
+  if (start_pos == string::npos)
+    return false;
+  str.replace(start_pos, from.length(), to);
+  return true;
+}
+
+int part_one() {
+  ifstream infile("./day-one.input");
+
+  if (!infile) {
+    cout << "it's joever\n";
+    return -1;
+  }
+
+  string line;
+  vector<int> numbers;
   int sum = 0;
 
-  while (std::getline(infile, line)) {
-    std::vector<char> nums;
+  while (getline(infile, line)) {
+    vector<char> nums;
     for (char &c : line) {
-      if (std::isdigit(c)) {
+      if (isdigit(c)) {
         nums.push_back(c);
       }
     }
 
-    if (nums.size() > 2) {
-      numbers.push_back(combine_items(nums[0], nums[nums.size() - 1]));
-    } else if (nums.size() == 1) {
-      numbers.push_back(combine_items(nums[0], nums[0]));
-    } else {
-      numbers.push_back(combine_items(nums[0], nums[1]));
-    }
+    numbers.push_back(combine_items(nums[0], nums[nums.size() - 1]));
   }
 
   for (int num : numbers) {
@@ -39,36 +50,50 @@ int part_one(std::ifstream &infile) {
   return sum;
 }
 
-int part_two(std::ifstream &infile) {
-  std::string line;
-  std::vector<int> numbers;
-  std::vector<char> nums;
-  std::unordered_map<std::string, int> map_deez_nuts{
-      {"one", 1}, {"two", 2},   {"three", 3}, {"four", 4}, {"five", 5},
-      {"six", 6}, {"seven", 7}, {"eight", 8}, {"nine", 9}};
+int part_two() {
+  ifstream infile("./day-one-test-two.input");
+
+  if (!infile) {
+    cout << "it's joever\n";
+    return -1;
+  }
+
+  string line;
+  vector<int> numbers;
+  unordered_map<string, string> map_deez_nuts{
+      {"one", "one1one"},       {"two", "two2two"},
+      {"three", "three3three"}, {"four", "four4four"},
+      {"five", "five5five"},    {"six", "six6six"},
+      {"seven", "seven7seven"}, {"eight", "eight8eight"},
+      {"nine", "nine9nine"}};
 
   int sum = 0;
 
-  while (std::getline(infile, line)) {
+  while (getline(infile, line)) {
+    vector<char> nums;
+    for (const auto &item : map_deez_nuts) {
+      replace(line, item.first, item.second);
+    }
+
     for (char &c : line) {
-      if (std::isdigit(c)) {
+      if (isdigit(c)) {
         nums.push_back(c);
       }
     }
+
+    numbers.push_back(combine_items(nums[0], nums[nums.size() - 1]));
+  }
+
+  for (int num : numbers) {
+    sum += num;
   }
 
   return sum;
 }
 
 int main() {
-  std::ifstream infile("./day-one.input");
-
-  if (!infile) {
-    std::cout << "it's joever\n";
-    return -1;
-  }
-
-  std::cout << part_one(infile) << "\n";
+  cout << part_one() << "\n";
+  cout << part_two() << "\n";
 
   return 0;
 }

@@ -1,4 +1,3 @@
-#include <iostream>
 #include <sstream>
 
 #include "split_me_daddy.h"
@@ -59,18 +58,12 @@ int collect_colors(const std::vector<std::string> sets) {
       int value = std::stoi(set.substr(0, *" "));
       std::string color = extract_color(set);
 
-      if (color == "red") {
-        if (max_red == 0 || max_red < value) {
-          max_red = value;
-        }
-      } else if (color == "blue") {
-        if (max_blue == 0 || max_blue < value) {
-          max_blue = value;
-        }
-      } else if (color == "green") {
-        if (max_green == 0 || max_green < value) {
-          max_green = value;
-        }
+      if (color == "red" && max_red < value) {
+        max_red = value;
+      } else if (color == "blue" && max_blue < value) {
+        max_blue = value;
+      } else if (color == "green" && max_green < value) {
+        max_green = value;
       }
     }
   }

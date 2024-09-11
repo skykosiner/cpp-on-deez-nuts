@@ -15,5 +15,6 @@ set(APP_NAME cpp_on_deez_nuts)
 add_executable(${APP_NAME}
     src/main.cpp
     src/utils.cpp
+    src/parts.cpp
 )
 

@@ -1,3 +1,5 @@
+// TODO: Feels like I'm going at this the wrong way
+// There must be a better way to do this
 import { readFile } from "fs/promises";
 
 async function getLines(): Promise<string[]> {
@@ -8,17 +10,15 @@ async function getLines(): Promise<string[]> {
 function getFullNumberAroundItem(row: string, x: number): number {
     // Check forwards at first
     let number = "";
+    console.log(`Checking ${row} at ${x}`);
 
     for (x; x < row.length; x++) {
         if (row[x] === ".") break;
         while (x < row.length && !isNaN(parseInt(row[x]))) {
-            console.log(row);
             number += row[x];
             x++;
         }
     }
-
-    console.log(number);
 
     return parseInt(number);
 
@@ -56,7 +56,9 @@ async function main() {
 
             if (char === ".") return;
 
-            getFullNumberAroundItem(lines[adj_y], adj_x);
+            console.log(`Checking the cords (${adj_y}, ${adj_x})`);
+            const number = getFullNumberAroundItem(lines[adj_y], adj_x);
+            console.log(number);
         }))
     })
 }
